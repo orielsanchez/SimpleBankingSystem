@@ -8,7 +8,7 @@ import java.util.Random;
 public class Account {
     private final long ID;
     private final String PIN;
-    private final int balance;    //cent
+    private int balance;    //cent
 
     private static String generatePIN() {
         Random random = new Random();
@@ -79,4 +79,7 @@ public class Account {
         return balance;
     }
 
+    public void addFunds(int funds) {
+        this.balance += funds;
+    }
 }

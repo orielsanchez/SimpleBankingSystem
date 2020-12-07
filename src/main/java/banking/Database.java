@@ -107,4 +107,21 @@ public class Database {
         }
         return account;
     }
+
+    public void update(String card_number, int newBalance) {
+        String sql = "UPDATE card SET balance = ? "
+                + "WHERE number = ?";
+
+        try (Connection conn = this.connect(filename);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setInt(1, newBalance);
+            pstmt.setString(2, card_number);
+            // update
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
