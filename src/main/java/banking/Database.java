@@ -11,29 +11,17 @@ public class Database {
 
     public static void createNewDatabase(String filename) {
         Database.filename = filename;
-        String url = "jdbc:sqlite:" + filename;
-
-        try (Connection connection = DriverManager.getConnection(url)) {
-            if (connection != null) {
-                DatabaseMetaData metaData = connection.getMetaData();
-                System.out.println("The driver name is " + metaData.getDriverName());
-                System.out.println("A new database has been created");
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-        }
     }
 
     public static void createNewTable(String filename) {
         String url = "jdbc:sqlite:" + filename;
 
         String sql = """
-                CREATE TABLE IF NOT EXISTS card (
-                	id INTEGER PRIMARY KEY,
-                	number text NOT NULL,
-                	pin TEXT,
-                	balance INTEGER DEFAULT 0
+                 CREATE TABLE IF NOT EXISTS card (
+                id INTEGER PRIMARY KEY,
+                number text NOT NULL,
+                pin TEXT,
+                balance INTEGER DEFAULT 0
                 );""";
 
         try (
@@ -41,7 +29,6 @@ public class Database {
                 Statement statement = connection.createStatement()
         ) {
             statement.execute(sql);
-            System.out.println("sql statement executed");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -113,15 +100,58 @@ public class Database {
                 + "WHERE number = ?";
 
         try (Connection conn = this.connect(filename);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
             // set the corresponding param
-            pstmt.setInt(1, newBalance);
-            pstmt.setString(2, card_number);
+            preparedStatement.setInt(1, newBalance);
+            preparedStatement.setString(2, card_number);
             // update
-            pstmt.executeUpdate();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public void delete(String cardNumber) {
+        String sql = "DELETE FROM card WHERE number = ?";
+
+        try (
+                Connection connection = this.connect(filename);
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
+            preparedStatement.setString(1, cardNumber);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void transfer(String senderCardNumber, String recipientCardNumber, int amount) throws SQLException {
+        String removeFundsSQL = "UPDATE card SET balance = (balance - ?) WHERE number = ?";
+        String addFundsSQL = "UPDATE card SET balance = (balance + ?) WHERE number = ?";
+
+        try (
+                Connection connection = this.connect(filename)
+        ) {
+            connection.setAutoCommit(false);
+
+            try (
+                    PreparedStatement removeFunds = connection.prepareStatement(removeFundsSQL);
+                    PreparedStatement addFunds = connection.prepareStatement(addFundsSQL)
+            ) {
+                removeFunds.setInt(1, amount);
+                removeFunds.setString(2, senderCardNumber);
+                removeFunds.executeUpdate();
+
+                addFunds.setInt(1, amount);
+                addFunds.setString(2, recipientCardNumber);
+                addFunds.executeUpdate();
+
+                connection.commit();
+
+
+
+            }
         }
     }
 }

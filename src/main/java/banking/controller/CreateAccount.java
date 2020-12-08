@@ -14,10 +14,10 @@ public class CreateAccount {
         Main.database.insert(String.valueOf(account.getID()), account.getPIN(), account.getBalance());
 
         //Print account information
-        System.out.println("Your card has been created");
+        System.out.println("Your card has been created!");
         System.out.println("Your card number:");
         System.out.println(account.getID());
-        System.out.println("Your card PIN:");
+        System.out.println("\nYour card PIN:");
         System.out.println(account.getPIN());
 
         System.out.println();

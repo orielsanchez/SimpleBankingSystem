@@ -1,6 +1,8 @@
 package banking.view;
 
 import banking.Main;
+import banking.controller.CloseAccount;
+import banking.controller.TransferFunds;
 import banking.controller.UpdateAccount;
 import banking.model.Account;
 
@@ -13,9 +15,10 @@ public class LogInMenu {
 
     public void show() {
         System.out.println("1. Balance");
-        System.out.println("2. Add Funds");
-        System.out.println("3. Log out");
-        System.out.println("4. Delete Account");
+        System.out.println("2. Add income");
+        System.out.println("3. Do transfer");
+        System.out.println("4. Close Account");
+        System.out.println("5. Log out");
         System.out.println("0. Exit");
         System.out.println();
         choose(Main.in.nextInt());
@@ -30,7 +33,6 @@ public class LogInMenu {
                 show();
                 break;
             case 2:
-
                 System.out.println("How much would you like to add?");
                 int funds = -1;
                 while (funds < 0) {
@@ -39,16 +41,28 @@ public class LogInMenu {
                 logInAccount.addFunds(funds);
                 UpdateAccount.updateAccount(logInAccount);
                 System.out.println("\nFunds successfully added!");
-                System.out.println("You're balance is now " + logInAccount.getBalance() + "\n");
+                System.out.println("Your balance is now " + logInAccount.getBalance() + "\n");
                 show();
                 break;
             case 3:
+                boolean fundsTransferred = TransferFunds.transferFunds(logInAccount);
+                if (fundsTransferred) {
+                    logInAccount = Main.database.getAccount(logInAccount.getID());
+                    System.out.println("Funds have been transferred!");
+                }
+                show();
+                break;
+
+            case 4:
+                long accountNumber = logInAccount.getID();
+                CloseAccount.closeAccount(logInAccount);
+                logInAccount = null;
+                System.out.println("Your account #" + accountNumber + " has been deleted.\n");
+                break;
+            case 5:
                 logInAccount = null;
                 System.out.println("You have successfully logged out!");
                 break;
-            case 4:
-                System.out.println("Are you sure you want to delete your account?");
-                //DeleteAccount();
             case 0:
                 System.out.println("Bye!");
                 System.exit(0);
