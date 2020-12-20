@@ -45,17 +45,17 @@ public class TransferFunds {
             } else {
                 System.out.println("Enter amount to transfer from your account: ");
 
-                    try {
-                        amt = Main.in.next();
-                        if (Integer.parseInt(amt) > account.getBalance()) {
-                            System.out.println("Not enough money!");
-                            return false;
-                        }
-
-                        amount = Integer.parseInt(amt);
-                    } catch (NumberFormatException e) {
-                        e.getMessage();
+                try {
+                    amt = Main.in.next();
+                    if (Integer.parseInt(amt) > account.getBalance()) {
+                        System.out.println("Not enough money!");
+                        return false;
                     }
+
+                    amount = Integer.parseInt(amt);
+                } catch (NumberFormatException e) {
+                    e.getMessage();
+                }
 
 
                 keepGoing = false;

@@ -1,7 +1,3 @@
-banking/view/MainMenu.java
- banking.view.MainMenu
-banking/model/Account.java
- banking.model.Account
 banking/Main.java
  banking.Main
 banking/controller/TransferFunds.java
@@ -18,3 +14,7 @@ banking/controller/CreateAccount.java
  banking.controller.CreateAccount
 banking/controller/LogIn.java
  banking.controller.LogIn
+banking/model/Account.java
+ banking.model.Account
+banking/view/MainMenu.java
+ banking.view.MainMenu

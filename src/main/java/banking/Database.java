@@ -84,8 +84,7 @@ public class Database {
             }
 
 
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -148,7 +147,6 @@ public class Database {
                 addFunds.executeUpdate();
 
                 connection.commit();
-
 
 
             }

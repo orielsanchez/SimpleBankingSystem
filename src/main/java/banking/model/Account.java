@@ -16,7 +16,7 @@ public class Account {
         int pin = random.nextInt(10000);
         String temp = Integer.toString(pin);
         //If 4-bits pin
-        if(temp.length() == 4)
+        if (temp.length() == 4)
             return temp;
         //Full MSB with zero when not 4-bits
         return "0".repeat(Math.max(0, 4 - temp.length())) +
@@ -57,8 +57,9 @@ public class Account {
 
     /**
      * Create an account object by three arguments
-     * @param ID card id
-     * @param PIN account PIN
+     *
+     * @param ID      card id
+     * @param PIN     account PIN
      * @param balance account balance
      */
     public Account(long ID, String PIN, int balance) {

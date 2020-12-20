@@ -16,13 +16,12 @@ public class LogIn {
         Account account;
         String numForCheck = String.valueOf(id).substring(0, 15);
         String checkNum = numForCheck + Account.addLuhnNum(numForCheck);
-        if(!checkNum.equals(String.valueOf(id))) {
+        if (!checkNum.equals(String.valueOf(id))) {
             account = null;
-        }
-        else {
+        } else {
             account = Main.database.getAccount(id);
         }
-        if( account == null || !PIN.equals(account.getPIN())) {
+        if (account == null || !PIN.equals(account.getPIN())) {
             System.out.println("Wrong card number or PIN!\n");
         } else {
             System.out.println("You have successfully logged in!");
